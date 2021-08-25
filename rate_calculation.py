@@ -9,14 +9,21 @@ class formula_calculation():
     speed_cuiqu = 1.8, speed_jinglian = 1, speed_juzhen = 1, speed_keyan = 1,
     speed_caiji = 14.4, speed_jieshou = 1):
 
-        self.formula=pd.read_excel('data.xlsx')
+        self.formula_cn=pd.read_excel('data.xlsx')
+        self.formula_en = pd.read_excel('data_en.xlsx')
+        self.formula_en.columns = self.formula_cn.columns
+        self.formula = pd.concat([self.formula_cn,self.formula_en],axis=0)
         self.formula.index = self.formula['生产物品']
-        self.formula.drop(['生产物品'], axis=1, inplace=True)
+        
         # with open('config.json') as f:
         #     self.speed_cn = json.load(f)
         self.speed_cn = {'制造':speed_zhizao, '冶炼':speed_yelian, '化工':speed_huagong, '粒子对撞':speed_duizhuang, 
         '采矿':speed_caikuang, '抽水':speed_choushui, '弹射':speed_tanshe, '发射':speed_fashe, '萃取':speed_cuiqu,
         '精炼':speed_jinglian, '矩阵':speed_juzhen, '科研':speed_keyan,'采集': speed_caiji, '接收': speed_jieshou,}
+
+        # self.speed_en = {'Assembling':speed_zhizao, 'Smelting':speed_yelian, 'Chemical':speed_huagong, 'Particle collider':speed_duizhuang, 
+        # 'Mining':speed_caikuang, 'Pump':speed_choushui, 'Eject':speed_tanshe, 'Launch':speed_fashe, 'Extract':speed_cuiqu,
+        # 'Refinery':speed_jinglian, 'Matrix':speed_juzhen, 'Research':speed_keyan,'Collect': speed_caiji, 'Recive': speed_jieshou,}
 
         self.exception = ['采矿','接收','采集','抽水']
         self.formula_result = {}
@@ -26,8 +33,13 @@ class formula_calculation():
 
     def load_config(self):
         config = pd.read_excel('config.xlsx')
+        config.index = config['生产类型']
         # config.drop(['生产类型'], axis=1, inplace=True)
-        self.speed_cn = config.to_dict()
+        config = config.to_dict()
+        
+        for key in config['速度（倍率）/ Speed (times)'].keys():
+            self.speed_cn.setdefault(key)
+            self.speed_cn[key] = config['速度（倍率）/ Speed (times)'][key]
         self.speed_cn
 
     # 计算输出框架
@@ -94,8 +106,8 @@ class formula_calculation():
                         # 下一次计算所需的产量需要乘以配方所需原料数，同时除以当前配方的产量
                         next_quant_per_min = quant_per_min * next_times / self.formula.loc[ingredient]['产出数量']
                         next_formula = self.calculate_recursive(content, next_quant_per_min)
-                        print(next_formula)
-                        next_formula
+                        # print(next_formula)
+
 
         
 
