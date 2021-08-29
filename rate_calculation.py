@@ -13,7 +13,7 @@ class formula_calculation():
         self.formula_en = pd.read_excel('data_en.xlsx')
         self.formula_en.columns = self.formula_cn.columns
         self.formula = pd.concat([self.formula_cn,self.formula_en],axis=0)
-        self.formula.index = self.formula['生产物品']
+        self.formula.index = self.formula['生产物品/Production']
         
         # with open('config.json') as f:
         #     self.speed_cn = json.load(f)
@@ -32,20 +32,38 @@ class formula_calculation():
 
 
     def load_config(self):
-        config = pd.read_excel('config.xlsx')
-        config.index = config['生产类型']
+        config_file = pd.read_excel('config.xlsx')
+        speed_config = config_file[config_file.columns[:2]]
+        input_config = config_file[config_file.columns[2:4]]
+        speed_config.index = config_file['生产类型/Production type']
+
         # config.drop(['生产类型'], axis=1, inplace=True)
-        config = config.to_dict()
+        speed_config = speed_config.to_dict()
+        input_config = input_config.to_dict()
         
-        for key in config['速度（倍率）/ Speed (times)'].keys():
+        for key in speed_config['速度（倍率）/ Speed (times)'].keys():
             self.speed_cn.setdefault(key)
-            self.speed_cn[key] = config['速度（倍率）/ Speed (times)'][key]
+            self.speed_cn[key] = speed_config['速度（倍率）/ Speed (times)'][key]
         self.speed_cn
+        self.input_config = {}
+        for key, value in enumerate(input_config['生产物品/Production'].items()):
+            if pd.isna(input_config['生产物品/Production'][key]) is True:
+                continue
+            elif pd.isna(input_config['生产数量/Production quantity'][key]) is True:
+                continue
+            if input_config['生产物品/Production'][key] in self.input_config:
+                self.input_config[input_config['生产物品/Production'][key]] += input_config['生产数量/Production quantity'][key]
+            else:
+                self.input_config[input_config['生产物品/Production'][key]] = input_config['生产数量/Production quantity'][key]
+        self.input_config
 
     # 计算输出框架
-    def calculate(self, ingredient, quant_per_min):
+    def calculate(self, input_config):
 
-        formula = self.calculate_recursive(ingredient, quant_per_min)
+        for ingredient, quant_per_min in input_config.items():
+            result = self.calculate_recursive(ingredient, quant_per_min)
+
+        
         
         temp2 = []
         for items in self.formula_result:
@@ -53,7 +71,7 @@ class formula_calculation():
             for item in self.formula_result[items]:
                 temp.append(self.formula_result[items][item])
             temp2.append(temp)
-        columns = ['生产物品']
+        columns = ['生产物品/Production']
         for column in self.formula_result[ingredient].keys():
             columns.append(column)
         _result = pd.DataFrame(temp2,  columns=columns,)
@@ -70,31 +88,26 @@ class formula_calculation():
             
             return {}
         else:
-            if ingredient == '粒子宽带':
-                ingredient
-            sec_per_quant_predict = float(self.formula.loc[ingredient]['产出时间'] / self.formula.loc[ingredient]['产出数量']) 
+            sec_per_quant_predict = float(self.formula.loc[ingredient]['产出时间/Production time'] / self.formula.loc[ingredient]['产出数量/Quantity']) 
 
             quant_per_sec = quant_per_min / 60
             sec_per_quant = 1 / quant_per_sec
 
-            shengchanleixing = self.formula.loc[ingredient]['生产类型']
+            shengchanleixing = self.formula.loc[ingredient]['生产类型/Production type']
 
-            quant_per_min_predict = (60/sec_per_quant_predict) * self.speed_cn[self.formula.loc[ingredient]['生产类型']]
+            quant_per_min_predict = (60/sec_per_quant_predict) * self.speed_cn[self.formula.loc[ingredient]['生产类型/Production type']]
             times = quant_per_min / quant_per_min_predict       
             times = round(times, 1)
 
             formula.setdefault(ingredient)
-            formula[ingredient] = {'倍数':times, '类型':shengchanleixing, '预计速度(个每分钟)':quant_per_min_predict, 
-            '需要速度(个每分钟)':quant_per_min, }
-            # print('寻找配方:',ingredient,'需要速度(个每分钟)',quant_per_min,)
-            
-            # if self.init_flag == False:
-            #     self.init_flag = True
+            formula[ingredient] = {'倍数/times':times, '生产类型/Production type':shengchanleixing,
+            '预计速度(个每分钟)/Estimated speed(pieces per minute)':quant_per_min_predict,  
+            '需要速度(个每分钟)/Demand speed(pieces per minute)':quant_per_min, }
+
             self.formula_scan(formula)
             transfer_speeds = []
 
             self.speed_scan([quant_per_min_predict], ingredient, shengchanleixing)
-
 
             contents = self.formula.loc[ingredient].to_list()
             
@@ -104,12 +117,8 @@ class formula_calculation():
                     if pd.isna(content) is False:
                         next_times = contents[ind+1]
                         # 下一次计算所需的产量需要乘以配方所需原料数，同时除以当前配方的产量
-                        next_quant_per_min = quant_per_min * next_times / self.formula.loc[ingredient]['产出数量']
+                        next_quant_per_min = quant_per_min * next_times / self.formula.loc[ingredient]['产出数量/Quantity']
                         next_formula = self.calculate_recursive(content, next_quant_per_min)
-                        # print(next_formula)
-
-
-        
 
         return formula
 
@@ -120,23 +129,24 @@ class formula_calculation():
         sorter_speeds = self.sorter_speed_calculation(transfer_speeds, shengchanleixing)
 
         # 本质上是叠加之前的信息，由于配方的原料输入速度都是一样的，所以没影响
-        self.formula_result[ingredient].setdefault('最小分拣速度等级')
-        self.formula_result[ingredient]['最小分拣速度等级'] = sorter_speeds
-        self.formula_result[ingredient].setdefault('传送速度等级')
-        self.formula_result[ingredient]['传送速度等级'] = transfer_level        
-        self.formula_result[ingredient].setdefault('最适传送长度')
-        self.formula_result[ingredient]['最适传送长度'] = max_transfer_len
+        self.formula_result[ingredient].setdefault('最小分拣速度等级/Minimum sorting speed level')
+        self.formula_result[ingredient]['最小分拣速度等级/Minimum sorting speed level'] = sorter_speeds
+        self.formula_result[ingredient].setdefault('Transmission speed level')
+        self.formula_result[ingredient]['Transmission speed level'] = transfer_level        
+        self.formula_result[ingredient].setdefault('最适传送长度/Optimal transmission length')
+        self.formula_result[ingredient]['最适传送长度/Optimal transmission length'] = max_transfer_len
+
 
     def formula_scan(self, formula):
         for item in formula:
             if item in self.formula_result:
                 
-                self.formula_result[item]['倍数'] = self.formula_result[item]['倍数'] + formula[item]['倍数']
-                quant_per_min_predict = formula[item]['预计速度(个每分钟)']
-                quant_per_min = formula[item]['需要速度(个每分钟)']
-                # print('新增需求:',item,self.formula_result[item]['需要速度(个每分钟)'],'->',quant_per_min+self.formula_result[item]['需要速度(个每分钟)'],)
-                self.formula_result[item]['预计速度(个每分钟)'] = quant_per_min_predict
-                self.formula_result[item]['需要速度(个每分钟)'] = self.formula_result[item]['需要速度(个每分钟)'] + quant_per_min
+                self.formula_result[item]['倍数/times'] = self.formula_result[item]['倍数/times'] + formula[item]['倍数/times']
+                quant_per_min_predict = formula[item]['预计速度(个每分钟)/Estimated speed(pieces per minute)']
+                quant_per_min = formula[item]['需要速度(个每分钟)/Demand speed(pieces per minute)']
+                # print('新增需求:',item,self.formula_result[item]['需要速度(个每分钟)/Demand speed(pieces per minute)'],'->',quant_per_min+self.formula_result[item]['需要速度(个每分钟)/Demand speed(pieces per minute)'],)
+                self.formula_result[item]['预计速度(个每分钟)/Estimated speed(pieces per minute)'] = quant_per_min_predict
+                self.formula_result[item]['需要速度(个每分钟)/Demand speed(pieces per minute)'] = self.formula_result[item]['需要速度(个每分钟)/Demand speed(pieces per minute)'] + quant_per_min
                 
             else:
                 self.formula_result.setdefault(item)
@@ -192,10 +202,10 @@ class formula_calculation():
 
         return ','.join(transfer_speeds)
 
-
-use = formula_calculation()
-# 产物输入
-formula = use.calculate('白糖', 1200)
+if __name__ == '__main__':
+    use = formula_calculation()
+    # 产物输入
+    formula = use.calculate(use.input_config)
 
 
 

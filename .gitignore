@@ -5,3 +5,6 @@
 /wirte_json.py
 /~$data.xlsx
 /~$result.xlsx
+~$config.xlsx
+.gitignore
+/data_en.xlsx
