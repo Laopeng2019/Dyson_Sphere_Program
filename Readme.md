@@ -8,14 +8,14 @@ Please see the bottom for the introduction in English.
 相比于其他计算器，这个计算器实现了计算极限生产线长度（比如一条普通速度的传送带可以最多放几个铁块冶炼炉），以及如何最低分拣器的等级。
 总的来说，就是为密集型生产提供数字计算。
 
-====
+---
 
 
 ## 输入配平计算与需求配置速度
 **config.xlsx** 文件是储存输入配平计算与需求配置速度的文件。
 生产物品/Production 是输入需要配平计算的物品，生产数量/Production quantity 是输入需要计算的数量（个/每分钟）。
 
-====
+---
 
 
 
@@ -23,7 +23,7 @@ Please see the bottom for the introduction in English.
 编程语言是Python，使用了pandas框架读取生产公式数据以及配置（包括速度和输入）。
 结构上使用的是递归结构。
 
-====
+---
 
 ## 生产公式
 **data.xlsx** 文件是储存生产公式的文件，做成Excel文件方便输入和更改
@@ -31,7 +31,7 @@ Please see the bottom for the introduction in English.
 比如 
 >1精炼油 + 1氢 = 2原油 -> 1精炼油 = 2原油 - 1氢
 
-====
+---
 
 ## 计算结果
 **result.xlsx** 文件是储存计算结果的文件
@@ -40,25 +40,25 @@ Please see the bottom for the introduction in English.
 需要速度同时也可以是给定的值，比如
 >白糖，1200
 
-====
+---
 
 ## Introduction
 Compared with other calculators, this calculator realizes the calculation of the limit production line length (for example, a normal speed conveyor belt can put at most several iron smelting furnaces), and how to minimize the level of the sorter.
 In general, it is to provide digital calculations for intensive production.
 
-====
+---
 
 ## Input trim calculation and demand configuration speed
 The file **config.xlsx** stores the input balance calculation and the demanded configuration speed.
 Production is the item that needs to be balanced and calculated, and production quantity is the quantity of production that needs to be calculated (one/per minute).
 
-====
+---
 
 ## Implementation
 The programming language is Python, and the pandas framework is used to read the production formula data and configuration (including speed and input).
 This program uses a recursive structure.
 
-====
+---
 
 ## Production formula
 A file **data.xlsx** stores production formulas and is made into an Excel file for easy input and modification.
@@ -66,7 +66,7 @@ The difference is that in the formula, by-products such as hydrogen will become 
 For example,
 >1 Refined oil + 1 Hydrogen = 2 Crude oil -> 1 Refined oil = 2 Crude oil - 1 Hydrogen
 
-====
+---
 
 ## Calculation results
 The file **result.xlsx** stores the calculation results.
