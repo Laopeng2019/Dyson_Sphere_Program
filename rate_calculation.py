@@ -15,15 +15,9 @@ class formula_calculation():
         self.formula = pd.concat([self.formula_cn,self.formula_en],axis=0)
         self.formula.index = self.formula['生产物品/Production']
         
-        # with open('config.json') as f:
-        #     self.speed_cn = json.load(f)
-        self.speed_cn = {'制造':speed_zhizao, '冶炼':speed_yelian, '化工':speed_huagong, '粒子对撞':speed_duizhuang, 
+        self.speed = {'制造':speed_zhizao, '冶炼':speed_yelian, '化工':speed_huagong, '粒子对撞':speed_duizhuang, 
         '采矿':speed_caikuang, '抽水':speed_choushui, '弹射':speed_tanshe, '发射':speed_fashe, '萃取':speed_cuiqu,
         '精炼':speed_jinglian, '矩阵':speed_juzhen, '科研':speed_keyan,'采集': speed_caiji, '接收': speed_jieshou,}
-
-        # self.speed_en = {'Assembling':speed_zhizao, 'Smelting':speed_yelian, 'Chemical':speed_huagong, 'Particle collider':speed_duizhuang, 
-        # 'Mining':speed_caikuang, 'Pump':speed_choushui, 'Eject':speed_tanshe, 'Launch':speed_fashe, 'Extract':speed_cuiqu,
-        # 'Refinery':speed_jinglian, 'Matrix':speed_juzhen, 'Research':speed_keyan,'Collect': speed_caiji, 'Recive': speed_jieshou,}
 
         self.exception = ['采矿','接收','采集','抽水']
         self.formula_result = {}
@@ -37,14 +31,13 @@ class formula_calculation():
         input_config = config_file[config_file.columns[2:4]]
         speed_config.index = config_file['生产类型/Production type']
 
-        # config.drop(['生产类型'], axis=1, inplace=True)
         speed_config = speed_config.to_dict()
         input_config = input_config.to_dict()
         
         for key in speed_config['速度（倍率）/ Speed (times)'].keys():
-            self.speed_cn.setdefault(key)
-            self.speed_cn[key] = speed_config['速度（倍率）/ Speed (times)'][key]
-        self.speed_cn
+            self.speed.setdefault(key)
+            self.speed[key] = speed_config['速度（倍率）/ Speed (times)'][key]
+        self.speed
         self.input_config = {}
         for key, value in enumerate(input_config['生产物品/Production'].items()):
             if pd.isna(input_config['生产物品/Production'][key]) is True:
@@ -59,12 +52,9 @@ class formula_calculation():
 
     # 计算输出框架
     def calculate(self, input_config):
-
         for ingredient, quant_per_min in input_config.items():
             result = self.calculate_recursive(ingredient, quant_per_min)
 
-        
-        
         temp2 = []
         for items in self.formula_result:
             temp = [items]
@@ -83,9 +73,7 @@ class formula_calculation():
         formula = {}
         nomal_mineral_cover_quant = 5
 
-        
         if ingredient not in self.formula.index:
-            
             return {}
         else:
             sec_per_quant_predict = float(self.formula.loc[ingredient]['产出时间/Production time'] / self.formula.loc[ingredient]['产出数量/Quantity']) 
@@ -93,21 +81,21 @@ class formula_calculation():
             quant_per_sec = quant_per_min / 60
             sec_per_quant = 1 / quant_per_sec
 
-            shengchanleixing = self.formula.loc[ingredient]['生产类型/Production type']
+            production_type = self.formula.loc[ingredient]['生产类型/Production type']
 
-            quant_per_min_predict = (60/sec_per_quant_predict) * self.speed_cn[self.formula.loc[ingredient]['生产类型/Production type']]
+            quant_per_min_predict = (60/sec_per_quant_predict) * self.speed[self.formula.loc[ingredient]['生产类型/Production type']]
             times = quant_per_min / quant_per_min_predict       
             times = round(times, 1)
 
             formula.setdefault(ingredient)
-            formula[ingredient] = {'倍数/times':times, '生产类型/Production type':shengchanleixing,
-            '预计速度(个每分钟)/Estimated speed(pieces per minute)':quant_per_min_predict,  
-            '需要速度(个每分钟)/Demand speed(pieces per minute)':quant_per_min, }
+            formula[ingredient] = {'倍数/times':times, '生产类型/Production type':production_type,
+            '预计速度(个每分钟)/Estimated speed(one per minute)':quant_per_min_predict,  
+            '需要速度(个每分钟)/Demanded speed(one per minute)':quant_per_min, }
 
             self.formula_scan(formula)
             transfer_speeds = []
 
-            self.speed_scan([quant_per_min_predict], ingredient, shengchanleixing)
+            self.speed_scan([quant_per_min_predict], ingredient, production_type)
 
             contents = self.formula.loc[ingredient].to_list()
             
@@ -122,11 +110,11 @@ class formula_calculation():
 
         return formula
 
-    def speed_scan(self, transfer_speeds, ingredient, shengchanleixing):
-        # transfer_speeds = sorted(transfer_speeds, reverse=True)
+    def speed_scan(self, transfer_speeds, ingredient, production_type):
+
         # 极限传送长度
-        max_transfer_len, transfer_level = self.max_transfer_len_calculation(transfer_speeds, shengchanleixing)
-        sorter_speeds = self.sorter_speed_calculation(transfer_speeds, shengchanleixing)
+        max_transfer_len, transfer_level = self.max_transfer_len_calculation(transfer_speeds, production_type)
+        sorter_speeds = self.sorter_speed_calculation(transfer_speeds, production_type)
 
         # 本质上是叠加之前的信息，由于配方的原料输入速度都是一样的，所以没影响
         self.formula_result[ingredient].setdefault('最小分拣速度等级/Minimum sorting speed level')
@@ -136,24 +124,20 @@ class formula_calculation():
         self.formula_result[ingredient].setdefault('最适传送长度/Optimal transmission length')
         self.formula_result[ingredient]['最适传送长度/Optimal transmission length'] = max_transfer_len
 
-
     def formula_scan(self, formula):
         for item in formula:
             if item in self.formula_result:
-                
                 self.formula_result[item]['倍数/times'] = self.formula_result[item]['倍数/times'] + formula[item]['倍数/times']
-                quant_per_min_predict = formula[item]['预计速度(个每分钟)/Estimated speed(pieces per minute)']
-                quant_per_min = formula[item]['需要速度(个每分钟)/Demand speed(pieces per minute)']
-                # print('新增需求:',item,self.formula_result[item]['需要速度(个每分钟)/Demand speed(pieces per minute)'],'->',quant_per_min+self.formula_result[item]['需要速度(个每分钟)/Demand speed(pieces per minute)'],)
-                self.formula_result[item]['预计速度(个每分钟)/Estimated speed(pieces per minute)'] = quant_per_min_predict
-                self.formula_result[item]['需要速度(个每分钟)/Demand speed(pieces per minute)'] = self.formula_result[item]['需要速度(个每分钟)/Demand speed(pieces per minute)'] + quant_per_min
-                
+                quant_per_min_predict = formula[item]['预计速度(个每分钟)/Estimated speed(one per minute)']
+                quant_per_min = formula[item]['需要速度(个每分钟)/Demanded speed(one per minute)']
+                self.formula_result[item]['预计速度(个每分钟)/Estimated speed(one per minute)'] = quant_per_min_predict
+                self.formula_result[item]['需要速度(个每分钟)/Demanded speed(one per minute)'] = self.formula_result[item]['需要速度(个每分钟)/Demanded speed(one per minute)'] + quant_per_min
             else:
                 self.formula_result.setdefault(item)
                 self.formula_result[item] = formula[item]  
         return 
 
-    def max_transfer_len_calculation(self, transfer_speeds, shengchanleixing):
+    def max_transfer_len_calculation(self, transfer_speeds, production_type):
         ''' 传送速度等级和极限传送长度
         '''
         transfer_level = []
@@ -175,20 +159,19 @@ class formula_calculation():
             else: 
                 max_transfer_len.append(str(round(30/transfer_speed_temp, 1))) 
                 transfer_level.append('>3') 
-            if shengchanleixing in self.exception:
-                transfer_speeds[ind] = '无'
-                max_transfer_len[ind] = '无'
+            if production_type in self.exception:
+                transfer_speeds[ind] = '无/None'
+                max_transfer_len[ind] = '无/None'
                 continue 
-
 
         return ','.join(max_transfer_len), ','.join(transfer_level)
 
-    def sorter_speed_calculation(self, transfer_speeds, shengchanleixing):
+    def sorter_speed_calculation(self, transfer_speeds, production_type):
         '''最小分拣速度计算
         '''
         for ind, transfer_speed in enumerate(transfer_speeds):
-            if shengchanleixing in self.exception:
-                transfer_speeds[ind] = '无'
+            if production_type in self.exception:
+                transfer_speeds[ind] = '无/None'
                 continue            
             if transfer_speed / 60  <= 1.5:
                 transfer_speeds[ind] = '1'
@@ -198,7 +181,6 @@ class formula_calculation():
                 transfer_speeds[ind] = '3'
             else:
                 transfer_speeds[ind] = '3'
-
 
         return ','.join(transfer_speeds)
 
