@@ -4,6 +4,7 @@ Dyson Sphere Program's assembly line production trim calculator
 
 中文请看[这里](https://github.com/Laopeng2019/Dyson_Sphere_Program/blob/master/Readme.md)。
 
+Contents
 > [Introduction](https://github.com/Laopeng2019/Dyson_Sphere_Program/blob/master/Readme_en.md#introduction)<br>
 > [How to use](https://github.com/Laopeng2019/Dyson_Sphere_Program/blob/master/Readme_en.md#how-to-use)<br>
 > [Calculation results](https://github.com/Laopeng2019/Dyson_Sphere_Program/blob/master/Readme_en.md#calculation-results)<br>
@@ -22,7 +23,7 @@ This program uses a recursive structure.
 
 ### Input trim calculation and demand configuration speed.
 
-The file **config.xlsx** stores the input balance calculation and the demanded configuration speed.
+The file `config.xlsx` stores the input balance calculation and the demanded configuration speed.
 
 Production is the item that needs to be balanced and calculated, and production quantity is the quantity of production that needs to be calculated (one/per minute).
 
@@ -35,7 +36,7 @@ Such as,
 
 ### Production formula
 
-A file **data.xlsx** stores production formulas and is made into an Excel file for easy input and modification.
+A file `data.xlsx` stores production formulas and is made into an Excel file for easy input and modification.
 
 `config.xlsx` 文件是储存输入配平计算与需求配置速度的文件。
 
@@ -57,7 +58,7 @@ For example,
 
 ## Calculation results
 
-The file **result.xlsx** stores the calculation results, 
+The file `result.xlsx` stores the calculation results, 
 which include:
 - 生产物品 / Production	
 - 倍数 / times	
