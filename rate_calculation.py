@@ -9,10 +9,7 @@ class formula_calculation():
     speed_cuiqu = 1.8, speed_jinglian = 1, speed_juzhen = 1, speed_keyan = 1,
     speed_caiji = 14.4, speed_jieshou = 1):
 
-        self.formula_cn=pd.read_excel('data.xlsx')
-        self.formula_en = pd.read_excel('data_en.xlsx')
-        self.formula_en.columns = self.formula_cn.columns
-        self.formula = pd.concat([self.formula_cn,self.formula_en],axis=0)
+        self.formula=pd.read_excel('data.xlsx')
         self.formula.index = self.formula['生产物品/Production']
         
         self.speed = {'制造':speed_zhizao, '冶炼':speed_yelian, '化工':speed_huagong, '粒子对撞':speed_duizhuang, 
