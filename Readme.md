@@ -4,8 +4,8 @@
 [Please see the bottom for the introduction in English.]()
 
 > [简介](https://github.com/Laopeng2019/Dyson_Sphere_Program/blob/master/Readme.md#%E7%AE%80%E4%BB%8B)<br>
-> [使用步骤](https://github.com/Laopeng2019/Dyson_Sphere_Program/blob/master/Readme.md#%E8%BE%93%E5%85%A5%E9%85%8D%E5%B9%B3%E8%AE%A1%E7%AE%97%E4%B8%8E%E9%9C%80%E6%B1%82%E9%85%8D%E7%BD%AE%E9%80%9F%E5%BA%A6)<br>
-> [计算结果]()<br>
+> [使用步骤](https://github.com/Laopeng2019/Dyson_Sphere_Program/blob/master/Readme.md#%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%AA%A4)<br>
+> [计算结果](https://github.com/Laopeng2019/Dyson_Sphere_Program#%E8%AE%A1%E7%AE%97%E7%BB%93%E6%9E%9C)<br>
 
 
 ## 简介
