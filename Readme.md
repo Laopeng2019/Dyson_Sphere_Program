@@ -1,4 +1,4 @@
-戴森球计划的流水线生产配平计算器/Dyson Sphere Program's assembly line production trim calculator
+戴森球计划的流水线生产配平计算器 / Dyson Sphere Program's assembly line production trim calculator
 ====
 
 Please see [here](https://github.com/Laopeng2019/Dyson_Sphere_Program/blob/master/Readme_en.md) for the introduction in English.
