@@ -1,11 +1,13 @@
-# 戴森球计划的流水线生产配平计算器/Dyson Sphere Program's assembly line production trim calculator
+戴森球计划的流水线生产配平计算器/Dyson Sphere Program's assembly line production trim calculator
+====
 
 Please see the bottom for the introduction in English.
 
----
+
 
 ## 简介
 相比于其他计算器，这个计算器实现了计算极限生产线长度（比如一条普通速度的传送带可以最多放几个铁块冶炼炉），以及如何最低分拣器的等级。
+
 总的来说，就是为密集型生产提供数字计算。
 
 ---
