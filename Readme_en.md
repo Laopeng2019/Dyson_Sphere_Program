@@ -2,7 +2,7 @@ Dyson Sphere Program's assembly line production trim calculator
 ----
 
 
-中文请看[这里](https://github.com/Laopeng2019/Dyson_Sphere_Program/blob/0f9e5a7e21454b4f58d80308b9254de9a3a2a719/Readme_en.md)。
+中文请看[这里](https://github.com/Laopeng2019/Dyson_Sphere_Program/blob/master/Readme.md)。
 
 > [Introduction](https://github.com/Laopeng2019/Dyson_Sphere_Program/blob/master/Readme_en.md#introduction)<br>
 > [How to use](https://github.com/Laopeng2019/Dyson_Sphere_Program/blob/master/Readme_en.md#how-to-use)<br>
