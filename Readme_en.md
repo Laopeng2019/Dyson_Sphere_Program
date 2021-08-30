@@ -2,6 +2,11 @@ Dyson Sphere Program's assembly line production trim calculator
 ----
 
 
+中文请看[这里](https://github.com/Laopeng2019/Dyson_Sphere_Program/blob/0f9e5a7e21454b4f58d80308b9254de9a3a2a719/Readme_en.md)。
+
+> [Introduction](https://github.com/Laopeng2019/Dyson_Sphere_Program/blob/master/Readme.md#%E7%AE%80%E4%BB%8B)<br>
+> [How to use](https://github.com/Laopeng2019/Dyson_Sphere_Program/blob/master/Readme.md#%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%AA%A4)<br>
+> [Calculation results](https://github.com/Laopeng2019/Dyson_Sphere_Program#%E8%AE%A1%E7%AE%97%E7%BB%93%E6%9E%9C)<br>
 
 ## Introduction
 Compared with other calculators, this calculator realizes the calculation of the limit production line length (for example, a normal speed conveyor belt can put at most several iron smelting furnaces), and how to minimize the level of the sorter.
@@ -12,26 +17,39 @@ The programming language is Python, and the pandas framework is used to read the
 
 This program uses a recursive structure.
 
----
 
-## Input trim calculation and demand configuration speed
+## How to use
+- Input trim calculation and demand configuration speed.
+
+```
 The file **config.xlsx** stores the input balance calculation and the demanded configuration speed.
+
 Production is the item that needs to be balanced and calculated, and production quantity is the quantity of production that needs to be calculated (one/per minute).
 
+Such as,
+| 生产物品 / Production | 生产数量 / Production quantity |
+| :---: | :---: |
+| White matrix | 1200 |
+```
 
----
+- Production formula
 
-## Production formula
+
+```
 A file **data.xlsx** stores production formulas and is made into an Excel file for easy input and modification.
-The difference is that in the formula, by-products such as hydrogen will become raw materials with a negative sign to facilitate calculations.
-For example,
->1 Refined oil + 1 Hydrogen = 2 Crude oil -> 1 Refined oil = 2 Crude oil - 1 Hydrogen
 
----
+The difference is that in the formula, by-products such as hydrogen will become raw materials with a negative sign to facilitate calculations.
+
+For example,
+
+1 Refined oil + 1 Hydrogen = 2 Crude oil -> 1 Refined oil = 2 Crude oil - 1 Hydrogen
+```
 
 ## Calculation results
+
 The file **result.xlsx** stores the calculation results.
+
 The estimated speed is the calibrated speed during production in the game, which is calculated by the production formula.
+
 The demanded speed is the current demanded speed based on the production speed required by the superior product, divided by the current raw material output.
-The demanded speed can also be a given value, such as
->White matrix，1200
+
