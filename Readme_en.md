@@ -38,7 +38,6 @@ Such as,
 
 A file `data.xlsx` stores production formulas and is made into an Excel file for easy input and modification.
 
-`config.xlsx` 文件是储存输入配平计算与需求配置速度的文件。
 
 - 生产类型 / Production type :
 
