@@ -1,7 +1,7 @@
 戴森球计划的流水线生产配平计算器/Dyson Sphere Program's assembly line production trim calculator
 ====
 
-[Please see the bottom for the introduction in English.]()
+Please see [here](https://github.com/Laopeng2019/Dyson_Sphere_Program/blob/0f9e5a7e21454b4f58d80308b9254de9a3a2a719/Readme_en.md) for the introduction in English.
 
 > [简介](https://github.com/Laopeng2019/Dyson_Sphere_Program/blob/master/Readme.md#%E7%AE%80%E4%BB%8B)<br>
 > [使用步骤](https://github.com/Laopeng2019/Dyson_Sphere_Program/blob/master/Readme.md#%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%AA%A4)<br>
