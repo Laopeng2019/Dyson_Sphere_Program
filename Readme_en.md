@@ -19,29 +19,31 @@ This program uses a recursive structure.
 
 
 ## How to use
-- Input trim calculation and demand configuration speed.
 
-```
+### Input trim calculation and demand configuration speed.
+
 The file **config.xlsx** stores the input balance calculation and the demanded configuration speed.
 
 Production is the item that needs to be balanced and calculated, and production quantity is the quantity of production that needs to be calculated (one/per minute).
 
 Such as,
+```
 | 生产物品 / Production | 生产数量 / Production quantity |
 | :---: | :---: |
 | White matrix | 1200 |
 ```
 
-- Production formula
+### Production formula
 
 
-```
+
 A file **data.xlsx** stores production formulas and is made into an Excel file for easy input and modification.
 
 The difference is that in the formula, by-products such as hydrogen will become raw materials with a negative sign to facilitate calculations.
 
 For example,
 
+```
 1 Refined oil + 1 Hydrogen = 2 Crude oil -> 1 Refined oil = 2 Crude oil - 1 Hydrogen
 ```
 
