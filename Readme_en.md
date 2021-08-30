@@ -4,9 +4,9 @@ Dyson Sphere Program's assembly line production trim calculator
 
 中文请看[这里](https://github.com/Laopeng2019/Dyson_Sphere_Program/blob/0f9e5a7e21454b4f58d80308b9254de9a3a2a719/Readme_en.md)。
 
-> [Introduction](https://github.com/Laopeng2019/Dyson_Sphere_Program/blob/master/Readme.md#%E7%AE%80%E4%BB%8B)<br>
-> [How to use](https://github.com/Laopeng2019/Dyson_Sphere_Program/blob/master/Readme.md#%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%AA%A4)<br>
-> [Calculation results](https://github.com/Laopeng2019/Dyson_Sphere_Program#%E8%AE%A1%E7%AE%97%E7%BB%93%E6%9E%9C)<br>
+> [Introduction](https://github.com/Laopeng2019/Dyson_Sphere_Program/blob/master/Readme_en.md#introduction)<br>
+> [How to use](https://github.com/Laopeng2019/Dyson_Sphere_Program/blob/master/Readme_en.md#how-to-use)<br>
+> [Calculation results](https://github.com/Laopeng2019/Dyson_Sphere_Program/blob/master/Readme_en.md#calculation-results)<br>
 
 ## Introduction
 Compared with other calculators, this calculator realizes the calculation of the limit production line length (for example, a normal speed conveyor belt can put at most several iron smelting furnaces), and how to minimize the level of the sorter.
@@ -34,8 +34,6 @@ Such as,
 ```
 
 ### Production formula
-
-
 
 A file **data.xlsx** stores production formulas and is made into an Excel file for easy input and modification.
 
