@@ -3,7 +3,7 @@
 
 [Please see the bottom for the introduction in English.]()
 
-> [简介]()<br>
+> [简介](https://github.com/Laopeng2019/Dyson_Sphere_Program/blob/master/Readme.md#%E7%AE%80%E4%BB%8B)<br>
 > [实现步骤]()<br>
 > [实现结果]()<br>
 
