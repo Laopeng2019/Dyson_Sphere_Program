@@ -1,11 +1,11 @@
-戴森球计划的流水线生产配平计算器/Dyson Sphere Program's assembly line production trim calculator
+戴森球计划的流水线生产配平计算器 / Dyson Sphere Program's assembly line production trim calculator
 ====
 
-[Please see the bottom for the introduction in English.]()
+Please see [here](https://github.com/Laopeng2019/Dyson_Sphere_Program/blob/master/Readme_en.md) for the introduction in English.
 
 > [简介](https://github.com/Laopeng2019/Dyson_Sphere_Program/blob/master/Readme.md#%E7%AE%80%E4%BB%8B)<br>
-> [实现步骤](https://github.com/Laopeng2019/Dyson_Sphere_Program/blob/master/Readme.md#%E8%BE%93%E5%85%A5%E9%85%8D%E5%B9%B3%E8%AE%A1%E7%AE%97%E4%B8%8E%E9%9C%80%E6%B1%82%E9%85%8D%E7%BD%AE%E9%80%9F%E5%BA%A6)<br>
-> [实现结果]()<br>
+> [使用步骤](https://github.com/Laopeng2019/Dyson_Sphere_Program/blob/master/Readme.md#%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%AA%A4)<br>
+> [计算结果](https://github.com/Laopeng2019/Dyson_Sphere_Program#%E8%AE%A1%E7%AE%97%E7%BB%93%E6%9E%9C)<br>
 
 
 ## 简介
@@ -19,12 +19,19 @@
 
 
 
-## 输入配平计算与需求配置速度
+## 使用步骤
+
+### 输入配平计算与需求配置速度
+
 `config.xlsx` 文件是储存输入配平计算与需求配置速度的文件。
 
-生产物品 / Production ：输入需要配平计算的物品。
+- 生产类型 / Production type : 
 
-生产数量 / Production quantity ：输入需要计算的数量（个 / 每分钟）。
+- 速度（倍率） /  Speed (ratio)	
+
+- 生产物品 / Production ：输入需要配平计算的物品。
+
+- 生产数量 / Production quantity ：输入需要计算的数量（个 / 每分钟）。
 
 | 生产物品 / Production | 生产数量 / Production quantity |
 | :---: | :---: |
@@ -32,56 +39,33 @@
 
 
 
-## 生产公式
+### 生产公式
 `data.xlsx` 文件是储存生产公式的文件，做成Excel文件方便输入和更改。
 
 不同的是在公式里，氢之类的副产物会变成带负号的原材料，以方便计算。
 
+比如: 
+
 ```
-比如 
 1精炼油 + 1氢 = 2原油 -> 1精炼油 = 2原油 - 1氢
 ```
 
 
 ## 计算结果
-`result.xlsx` 文件是储存计算结果的文件
+`result.xlsx` 文件是储存计算结果的文件。其中包括：
+
+- 生产物品 / Production	
+- 倍数 / times	
+- 生产类型 / Production type	
+- 预计速度(个每分钟) / Estimated speed(one per minute)	
+- 需要速度(个每分钟) / Demanded speed(one per minute)	
+- 最小分拣速度等级 / Minimum sorting speed level	
+- 传送速度等级 / Transmission speed level	
+- 最适传送长度 / Optimal transmission length
+
+倍数是指需要多少个设施来生产，生产类型指需要哪里设施
 
 其中预计速度是游戏里生产时候标定的速度，由生产公式计算得出。
 
 需要速度是根据上级产物需要的生产速度，除以当前原料产量，得出的当前的需要速度。
 
-
-
-
-## Introduction
-Compared with other calculators, this calculator realizes the calculation of the limit production line length (for example, a normal speed conveyor belt can put at most several iron smelting furnaces), and how to minimize the level of the sorter.
-
-In general, it is to provide digital calculations for intensive production.
-
-The programming language is Python, and the pandas framework is used to read the production formula data and configuration (including speed and input).
-
-This program uses a recursive structure.
-
----
-
-## Input trim calculation and demand configuration speed
-The file **config.xlsx** stores the input balance calculation and the demanded configuration speed.
-Production is the item that needs to be balanced and calculated, and production quantity is the quantity of production that needs to be calculated (one/per minute).
-
-
----
-
-## Production formula
-A file **data.xlsx** stores production formulas and is made into an Excel file for easy input and modification.
-The difference is that in the formula, by-products such as hydrogen will become raw materials with a negative sign to facilitate calculations.
-For example,
->1 Refined oil + 1 Hydrogen = 2 Crude oil -> 1 Refined oil = 2 Crude oil - 1 Hydrogen
-
----
-
-## Calculation results
-The file **result.xlsx** stores the calculation results.
-The estimated speed is the calibrated speed during production in the game, which is calculated by the production formula.
-The demanded speed is the current demanded speed based on the production speed required by the superior product, divided by the current raw material output.
-The demanded speed can also be a given value, such as
->White matrix，1200
