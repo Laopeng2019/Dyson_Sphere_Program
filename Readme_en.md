@@ -18,6 +18,8 @@ The programming language is `Python`, and the `pandas` framework is used to read
 
 This program uses a recursive structure.
 
+Attention: The production formula has not been written completely. Items not in the formula need to be filled out by hand.
+
 
 ## How to use
 
