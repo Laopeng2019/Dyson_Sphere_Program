@@ -19,6 +19,8 @@ Please see [here](https://github.com/Laopeng2019/Dyson_Sphere_Program/blob/maste
 
 通过运行 `rate_calculation.py` 文件可以读取输入文件，得到结果文件，可以在Excel里面打开查看。
 
+**注意：生产公式并为完全写完，不在公式里的物品需要自行填写**
+
 
 ## 使用步骤
 
