@@ -186,7 +186,7 @@ if __name__ == '__main__':
     # 产物输入
     formula = use.calculate(use.input_config)
     keys = [key for key in formula['生产物品 / Production']]
-    print(formula['需要速度(个每分钟) / Demanded speed(one per minute)'])
+    # print(formula['需要速度(个每分钟) / Demanded speed(one per minute)'])
     for i,j in zip(keys, formula['需要速度(个每分钟) / Demanded speed(one per minute)']):
         print(i,j)
 
