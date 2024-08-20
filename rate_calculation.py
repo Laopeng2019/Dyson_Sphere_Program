@@ -31,9 +31,9 @@ class formula_calculation():
         speed_config = speed_config.to_dict()
         input_config = input_config.to_dict()
         
-        for key in speed_config['速度（倍率） /  Speed (times)'].keys():
+        for key in speed_config['速度（倍率） /  Speed (ratio)'].keys():
             self.speed.setdefault(key)
-            self.speed[key] = speed_config['速度（倍率） /  Speed (times)'][key]
+            self.speed[key] = speed_config['速度（倍率） /  Speed (ratio)'][key]
         self.speed
         self.input_config = {}
         for key, value in enumerate(input_config['生产物品 / Production'].items()):
@@ -185,6 +185,10 @@ if __name__ == '__main__':
     use = formula_calculation()
     # 产物输入
     formula = use.calculate(use.input_config)
+    keys = [key for key in formula['生产物品 / Production']]
+    print(formula['需要速度(个每分钟) / Demanded speed(one per minute)'])
+    for i,j in zip(keys, formula['需要速度(个每分钟) / Demanded speed(one per minute)']):
+        print(i,j)
 
 
 
