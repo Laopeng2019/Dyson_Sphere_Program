@@ -1,5 +1,7 @@
 import pandas as pd
 import json
+import math
+from functools import reduce
 
 # This is a top-down approach of manufacture formula for both Chinese and English Dyson Sphere Program version
 # 这是一个自上而下的设计方法，包含了中文和英文的戴森球计划的生产配方
@@ -82,7 +84,7 @@ class formula_calculation():
 
             quant_per_min_predict = (60/sec_per_quant_predict) * self.speed[self.formula.loc[ingredient]['生产类型 / Production type']]
             times = quant_per_min / quant_per_min_predict       
-            times = round(times, 1)
+            times = round(times, 4)
 
             formula.setdefault(ingredient)
             formula[ingredient] = {'倍数 / times':times, '生产类型 / Production type':production_type,
@@ -186,9 +188,32 @@ if __name__ == '__main__':
     # 产物输入
     formula = use.calculate(use.input_config)
     keys = [key for key in formula['生产物品 / Production']]
-    # print(formula['需要速度(个每分钟) / Demanded speed(one per minute)'])
-    for i,j in zip(keys, formula['需要速度(个每分钟) / Demanded speed(one per minute)']):
+    result = formula['倍数 / times']
+    for i,j in zip(keys, result):
         print(i,j)
+    print('**************************')
+
+    # result2 = formula['需要速度(个每分钟) / Demanded speed(one per minute)']
 
 
+    # 原始列表
+    data = result.to_list()
+    # 选择一个精度（例如小数点后2位）
+    precision = 10
+
+    # 将浮点数转换为整数
+    int_data = [int(x * precision) for x in data]
+
+    # 计算列表中所有整数的最大公约数
+    def gcd_of_list(lst):
+        return reduce(math.gcd, lst)
+
+    # 计算最大公约数
+    gcd = gcd_of_list(int_data)
+
+    # 将每个元素除以最大公约数以得到比例
+    ratios = [x // gcd for x in int_data]
+    print('比例 Ratio:')
+    for i,j in zip(keys, ratios):
+        print(i,j)
 
